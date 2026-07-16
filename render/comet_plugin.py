@@ -12,6 +12,8 @@ See https://picassosr.readthedocs.io/en/latest/plugins.html for details on
 plugins, and https://comet.smlm.tools and Reinkensmeier L., Aufmkolk S.,
 Farabella I., Egner A., and Bates M. biorxiv, 2026 for COMET.
 
+    v0.1.1: Add a warning if too many pairs are found.
+
 Author: Lenny Reinkensmeier
 """
 
@@ -248,6 +250,49 @@ def comet(
     return locs, new_info, drift
 
 
+class COMETAbortedByUser(RuntimeError):
+    """Raised when the user opts out of a COMET run (e.g. after being warned
+    about an excessive number of neighbor pairs)."""
+
+
+# Above this number of neighbor pairs COMET becomes extremely slow / can run
+# out of memory, which almost always points to unpicked fiducials or unlinked
+# localizations rather than genuine data.
+_PAIR_COUNT_WARN_THRESHOLD = 1e9
+
+
+def _confirm_large_pair_count(n_pairs: int) -> bool:
+    """Warn about an excessive number of neighbor pairs and let the user opt
+    out. Returns True if the run should continue.
+
+    A pair count above a billion usually means that bright fiducials (e.g.
+    gold particles) were not picked out, or that localizations of the same
+    emitter across consecutive frames were not linked, so every frame
+    contributes densely overlapping points.
+    """
+    message = (
+        f"COMET found {n_pairs:,} neighbor pairs. "
+        "This can make the run extremely slow or run out of memory.\n\n"
+        "This usually means that some fiducials (e.g. gold particles) were "
+        "not picked out, or that localizations should be linked "
+        "(Postprocess -> Link localizations) before undrifting.\n\n"
+        "Do you want to continue anyway?"
+    )
+    app = QtWidgets.QApplication.instance()
+    if app is not None:
+        confirm = QtWidgets.QMessageBox.question(
+            None,
+            "COMET performance warning",
+            message,
+            QtWidgets.QMessageBox.StandardButton.Yes
+            | QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return confirm == QtWidgets.QMessageBox.StandardButton.Yes
+    # Headless / scripting fallback.
+    print(message)
+    return input("Continue anyway? (y/n): ").lower() == "y"
+
+
 def comet_run_kd(
     dataset,
     segmentation_mode,
@@ -340,6 +385,18 @@ def comet_run_kd(
             pair_indices_safety_check=pair_indices_safety_check,
         )
     )
+
+    # A high pair count makes the optimization prohibitively slow
+    # and memory-hungry, and usually indicates a data issue (unpicked
+    # fiducials or unlinked localizations). Warn and let the user opt out.
+    n_pairs = len(idx_i)
+    if n_pairs > _PAIR_COUNT_WARN_THRESHOLD and not _confirm_large_pair_count(
+        n_pairs
+    ):
+        raise COMETAbortedByUser(
+            "COMET run aborted by user due to the large number of neighbor "
+            f"pairs ({n_pairs:,})."
+        )
 
     # Set default initial sigma if not provided
     if initial_sigma_nm is None:
@@ -1596,6 +1653,10 @@ class Plugin:
                 progress=progress,
                 **params,
             )
+        except COMETAbortedByUser:
+            # The user was already warned and chose to abort this channel.
+            progress.close()
+            return False
         except RuntimeError as e:
             progress.close()
             QtWidgets.QMessageBox.warning(

@@ -8,7 +8,7 @@
       "app": "render",
       "description": "COMET drift correction for Picasso Render. Requires a CUDA-capable NVIDIA GPU and numba with CUDA support.",
       "author": "Lenny Reinkensmeier",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "min_picasso_version": "0.10.0"
     }
   ]
