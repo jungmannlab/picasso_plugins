@@ -5,8 +5,8 @@
 # NOTE: CODEOWNERS only has effect when "Require review from Code Owners" is
 # enabled in the branch protection rule for master.
 
-/index.json          @jungmannlab/picasso-maintainers
-/schema/             @jungmannlab/picasso-maintainers
-/tools/              @jungmannlab/picasso-maintainers
-/.github/            @jungmannlab/picasso-maintainers
-/CONTRIBUTING.md     @jungmannlab/picasso-maintainers
+/index.json          @rafalkowalewski1
+/schema/             @rafalkowalewski1
+/tools/              @rafalkowalewski1
+/.github/            @rafalkowalewski1
+/CONTRIBUTING.md     @rafalkowalewski1
