@@ -14,7 +14,7 @@ mismatch.
 
 Usage
 -----
-``python tools/check_bumps.py --base origin/master``
+``python tools/check_bumps.py --base origin/main``
 
 Exits 0 when every changed plugin file has both a new hash and a new version
 in the manifest, 1 otherwise. Standard library only.
@@ -71,8 +71,8 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--base",
-        default="origin/master",
-        help="ref to compare against (default: origin/master)",
+        default="origin/main",
+        help="ref to compare against (default: origin/main)",
     )
     args = parser.parse_args(argv)
 

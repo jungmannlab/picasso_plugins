@@ -51,4 +51,4 @@ and open a pull request with both files. Whenever a plugin's bytes change, its `
 | `tools/validate_schema.py` | Validates `index.json` against the schema (needs `jsonschema`). |
 
 ### For maintainers
-Picasso fetches `index.json` from `master`, so anything merged is live for every user immediately — there is no staging step and no release to hold a mistake back. The CI checks are only a real gate if `master` is protected: required status checks, required review, no direct pushes. See the "Repository settings" section of [CONTRIBUTING.md](CONTRIBUTING.md).
+Picasso fetches `index.json` from `main`, so anything merged is live for every user immediately — there is no staging step and no release to hold a mistake back. The CI checks are only a real gate if `main` is protected: required status checks, required review, no direct pushes. See the "Repository settings" section of [CONTRIBUTING.md](CONTRIBUTING.md).

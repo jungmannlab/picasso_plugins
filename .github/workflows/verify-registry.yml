@@ -5,14 +5,14 @@ name: Verify registry
 # published in index.json. These checks make an entry that would break that —
 # or that Picasso would silently drop — impossible to merge.
 #
-# MAINTAINERS: this workflow only protects master if it is configured as a
-# required status check and direct pushes to master are disabled. See
+# MAINTAINERS: this workflow only protects main if it is configured as a
+# required status check and direct pushes to main are disabled. See
 # CONTRIBUTING.md ("Repository settings").
 
 on:
   pull_request:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   verify:
