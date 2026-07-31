@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jungmannlab/picasso_plugins/schema/index.schema.json",
+  "title": "Picasso plugin registry manifest",
+  "description": "Structure of index.json, the manifest Picasso reads to list, install and update plugins. Additional properties are allowed on purpose, so a new optional field does not break older Picasso clients.",
+  "type": "object",
+  "required": ["schema", "plugins"],
+  "properties": {
+    "schema": {
+      "description": "Manifest format version. Bump only for a breaking change to this structure.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "plugins": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/plugin" }
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "plugin": {
+      "type": "object",
+      "required": [
+        "id",
+        "display_name",
+        "app",
+        "description",
+        "file",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "description": "Stable identifier. Becomes the file name (<id>.py) in the user's plugins folder, so it must not contain path characters. Changing it orphans existing installs.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+        },
+        "display_name": {
+          "description": "Name shown in Picasso's plugin browser.",
+          "type": "string",
+          "minLength": 1
+        },
+        "app": {
+          "description": "The Picasso GUI this plugin adds actions to.",
+          "type": "string",
+          "enum": [
+            "average",
+            "design",
+            "filter",
+            "localize",
+            "nanotron",
+            "render",
+            "simulate",
+            "spinna"
+          ]
+        },
+        "description": {
+          "description": "One or two sentences shown in the plugin browser. State any hardware or dependency requirement here.",
+          "type": "string",
+          "minLength": 1
+        },
+        "author": {
+          "description": "Who wrote and maintains the plugin.",
+          "type": "string"
+        },
+        "file": {
+          "description": "Relative path to the plugin source inside this repository. Forward slashes, no '..', must end in .py.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]+(/[A-Za-z0-9._-]+)*\\.py$",
+          "not": { "pattern": "(^|/)\\.\\.(/|$)" }
+        },
+        "version": {
+          "description": "Plugin version. Must increase whenever the file's bytes change, otherwise existing users are never offered the update.",
+          "type": "string",
+          "pattern": "\\d"
+        },
+        "sha256": {
+          "description": "SHA-256 of the exact bytes of 'file'. Picasso refuses to install an entry whose hash is missing or does not match. Regenerate with tools/hash_plugins.py --update.",
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "min_picasso_version": {
+          "description": "Oldest Picasso release this plugin works with. Older clients list it as incompatible instead of failing at import time.",
+          "type": "string",
+          "pattern": "\\d"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

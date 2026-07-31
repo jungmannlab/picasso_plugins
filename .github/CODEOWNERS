@@ -1,0 +1,12 @@
+# Files that define this registry's trust boundary. Everything a user ends up
+# running is selected by index.json and vouched for by the checks in tools/ and
+# .github/, so changes here need a maintainer review — see CONTRIBUTING.md.
+#
+# NOTE: CODEOWNERS only has effect when "Require review from Code Owners" is
+# enabled in the branch protection rule for master.
+
+/index.json          @jungmannlab/picasso-maintainers
+/schema/             @jungmannlab/picasso-maintainers
+/tools/              @jungmannlab/picasso-maintainers
+/.github/            @jungmannlab/picasso-maintainers
+/CONTRIBUTING.md     @jungmannlab/picasso-maintainers

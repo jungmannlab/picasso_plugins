@@ -4,6 +4,7 @@
     {
       "id": "COMET",
       "file": "render/comet_plugin.py",
+      "sha256": "4062d56dcde2ea3e8811c109791838b6b11d9d7e13882a10bc9de2ec6266df13",
       "display_name": "Undrift by COMET",
       "app": "render",
       "description": "COMET drift correction for Picasso Render. Requires a CUDA-capable NVIDIA GPU and numba with CUDA support.",

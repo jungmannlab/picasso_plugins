@@ -1,0 +1,47 @@
+name: Verify registry
+
+# The manifest is what pins each plugin's code: Picasso downloads a plugin,
+# hashes it, and refuses to install unless the bytes match the sha256
+# published in index.json. These checks make an entry that would break that —
+# or that Picasso would silently drop — impossible to merge.
+#
+# MAINTAINERS: this workflow only protects master if it is configured as a
+# required status check and direct pushes to master are disabled. See
+# CONTRIBUTING.md ("Repository settings").
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # check_bumps.py diffs against the base branch, so it needs history.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install schema validator
+        run: pip install --quiet --disable-pip-version-check jsonschema
+
+      - name: Validate index.json against the schema
+        run: python tools/validate_schema.py
+
+      - name: Verify hashes, ids and paths
+        run: python tools/hash_plugins.py --check
+
+      - name: Check every plugin file compiles
+        # Catches a syntactically broken plugin before it reaches a user. This
+        # only compiles, never imports, so plugin dependencies (picasso, PyQt6,
+        # numba, ...) are not needed here.
+        run: python -m compileall -q .
+
+      - name: Check changed plugins bumped their hash and version
+        if: github.event_name == 'pull_request'
+        run: python tools/check_bumps.py --base "origin/${{ github.base_ref }}"
