@@ -11,6 +11,17 @@
       "author": "Lenny Reinkensmeier",
       "version": "0.1.1",
       "min_picasso_version": "0.10.0"
+    },
+    {
+      "id": "spectral_demix",
+      "file": "render/spectral_demix.py",
+      "sha256": "8cecc429f50794a1fbf32aa4f50770c647ad9736415d996320692264477c17ab",
+      "display_name": "Spectral demixing",
+      "app": "render",
+      "description": "Splits the localizationa into dye populations selected from the 2D photon-count histogram (2-channel data).",
+      "author": "Rafal Kowalewski",
+      "version": "1.0.0",
+      "min_picasso_version": "0.11.0"
     }
   ]
 }
