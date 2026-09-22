@@ -22,6 +22,17 @@
       "author": "Rafal Kowalewski",
       "version": "1.0.0",
       "min_picasso_version": "0.11.0"
+    },
+    {
+      "id": "3D_avg",
+      "file": "average/3D_avg.py",
+      "sha256": "42885fa631ab5a1d46a15a42e5726afee66b94cc3a980ce8399a69ed26e89b00",
+      "display_name": "3D Average Transform",
+      "app": "average",
+      "description": "Aligns picked structures by 3D center of mass and in-plane rotation cross-correlation, and replays the reference transformations onto a second channel.",
+      "author": "Aditya Chhatre",
+      "version": "1.0.0",
+      "min_picasso_version": "0.11.0"
     }
   ]
 }
