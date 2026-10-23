@@ -53,6 +53,11 @@ from picasso import io, lib, __version__
 
 plt.style.use("ggplot")
 
+# The plugin runs in Picasso 0.11 and 1.0: 1.0 renamed
+# ``lib.hist2d_numba`` to ``lib.hist2d``. Photon counts carry no unit, so
+# nothing else depends on the version.
+_hist2d = getattr(lib, "hist2d", None) or lib.hist2d_numba
+
 #: Photon columns picked by default, in this order.
 DEFAULT_COLUMNS = ("photons_ch0", "photons_ch1")
 
@@ -381,7 +386,7 @@ class SpectralDemixWindow(QtWidgets.QMainWindow):
         y_min, y_max = float(ty.min()), float(ty.max())
         if x_max <= x_min or y_max <= y_min:
             return
-        counts = lib.hist2d_numba(
+        counts = _hist2d(
             np.ascontiguousarray(tx),
             np.ascontiguousarray(ty),
             x_min,
@@ -659,7 +664,7 @@ class Plugin:
             )
             return
         channel = view.get_channel("Choose a channel to demix")
-        if channel is None:  # the channel dialog was cancelled
+        if channel is None:  # the channel dialog was canceled
             return
         self.window_demix = show_locs(
             view.locs[channel],

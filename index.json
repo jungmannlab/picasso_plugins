@@ -4,34 +4,34 @@
     {
       "id": "COMET",
       "file": "render/comet_plugin.py",
-      "sha256": "4062d56dcde2ea3e8811c109791838b6b11d9d7e13882a10bc9de2ec6266df13",
+      "sha256": "8201138dfe59de9fd9d1577f0e756c672e2db77f3f1fe5ed059ba3d3c1ea6634",
       "display_name": "Undrift by COMET",
       "app": "render",
       "description": "COMET drift correction for Picasso Render. Requires a CUDA-capable NVIDIA GPU and numba with CUDA support.",
       "author": "Lenny Reinkensmeier",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "min_picasso_version": "0.10.0"
     },
     {
       "id": "spectral_demix",
       "file": "render/spectral_demix.py",
-      "sha256": "8cecc429f50794a1fbf32aa4f50770c647ad9736415d996320692264477c17ab",
+      "sha256": "354eacc58f76cbd617abe694a4e3db1f4a7aad375dbf9c59a4ae1ecefb95016e",
       "display_name": "Spectral demixing",
       "app": "render",
       "description": "Splits the localizationa into dye populations selected from the 2D photon-count histogram (2-channel data).",
       "author": "Rafal Kowalewski",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "min_picasso_version": "0.11.0"
     },
     {
       "id": "3D_avg",
       "file": "average/3D_avg.py",
-      "sha256": "42885fa631ab5a1d46a15a42e5726afee66b94cc3a980ce8399a69ed26e89b00",
+      "sha256": "fcdb816317b15817f89040fb6b70bf20f206ba19445d9a3b4d0a45e9dc1e4fd4",
       "display_name": "3D Average Transform",
       "app": "average",
       "description": "Aligns picked structures by 3D center of mass and in-plane rotation cross-correlation, and replays the reference transformations onto a second channel.",
       "author": "Aditya Chhatre",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "min_picasso_version": "0.11.0"
     }
   ]
